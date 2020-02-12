@@ -115,6 +115,25 @@ class _HomePageState extends State<HomePage> {
               });
         },
       ),
+      drawer: Drawer(
+          child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Text("ToDo List App"),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+          ),
+          ListTile(
+            title: Text("Reports"),
+            onTap: () {
+              //implementar business rules para report de tasks
+              Navigator.pop(context);
+            },
+          )
+        ],
+      )),
       floatingActionButton: FloatingActionButton(
         onPressed: add,
         child: Icon(Icons.add),
