@@ -6,7 +6,10 @@ class Item {
 
   Item.fromJson(Map<String, dynamic> json){
     title = json['title'];
-    title = json['done'];
+    done = json['done'];
+    if (done == null){
+      done = false;
+    }
   }
 
   Map<String, dynamic> toJson() {

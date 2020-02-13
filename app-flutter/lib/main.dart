@@ -1,8 +1,10 @@
 import 'dart:convert';
-
+import 'dart:io';
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/models/item.dart';
+import 'package:http/http.dart' as http;
+import 'package:todo/utils/utils.dart';
 
 void main() => runApp(App());
 
@@ -36,14 +38,14 @@ class _HomePageState extends State<HomePage> {
     if (newTaskCtrl.text.isEmpty) return;
     setState(() {
       widget.items.add(
-        Item(
+        save(Item(
           title: newTaskCtrl.text,
           done: false,
-        ),
+        )),
       );
       newTaskCtrl.clear();
-      save();
     });
+    getItems();
   }
 
   void remove(int index) {
@@ -52,25 +54,33 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future load() async {
-    var prefs = await SharedPreferences.getInstance();
-    var data = prefs.getString('data');
-    if (data != null) {
-      Iterable decoded = jsonDecode(data);
-      List<Item> result = decoded.map((x) => Item.fromJson(x)).toList();
+  save(Item item) async {
+    var data = json.encode(item);
+    http.Response response = await http.post(
+        Uri.encodeFull("${Utils.baseURL}/item"),
+        headers: {"Content-Type": "application/json"},
+        body: data);
+    print(response.body);
+  }
+
+  getItems() async {
+    http.Response response = await http.get(
+        Uri.encodeFull("${Utils.baseURL}/item"),
+        headers: {"Accept": "application/json"});
+
+    if (response != null) {
+      List data = json.decode(response.body);
+      List<Item> result = data.map((x) => Item.fromJson(x)).toList();
       setState(() {
         widget.items = result;
       });
+
+      print(response.body);
     }
   }
 
-  save() async {
-    var prefs = await SharedPreferences.getInstance();
-    await prefs.setString('data', jsonEncode(widget.items));
-  }
-
   _HomePageState() {
-    load();
+    getItems();
   }
 
   @override
@@ -100,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                 onChanged: (value) {
                   setState(() {
                     item.done = value;
-                    save();
+                    //add an update method - PUT
                   });
                 },
               ),
