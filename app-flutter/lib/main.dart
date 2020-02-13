@@ -36,16 +36,17 @@ class _HomePageState extends State<HomePage> {
 
   void add() {
     if (newTaskCtrl.text.isEmpty) return;
+    Item item = new Item(
+      title: newTaskCtrl.text,
+      done: false,
+    );
     setState(() {
       widget.items.add(
-        save(Item(
-          title: newTaskCtrl.text,
-          done: false,
-        )),
+        item,
       );
+      save(item);
       newTaskCtrl.clear();
     });
-    getItems();
   }
 
   void remove(int index) {
