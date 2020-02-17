@@ -40,16 +40,21 @@ class _HomePageState extends State<HomePage> {
       title: newTaskCtrl.text,
       done: false,
     );
+
+    save(item);
+
     setState(() {
       widget.items.add(
         item,
       );
-      save(item);
       newTaskCtrl.clear();
     });
   }
 
-  void remove(int index) {
+  void remove(int index, Item item) async {
+    await http
+        .delete(Uri.encodeFull("${Utils.baseURL}/item?title=${item.title}"));
+
     setState(() {
       widget.items.removeAt(index);
     });
@@ -75,9 +80,14 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         widget.items = result;
       });
-
-      print(response.body);
     }
+  }
+
+  update(Item item) async {
+    var data = json.encode(item);
+
+    await http.put(Uri.encodeFull("${Utils.baseURL}/item?title=${item.title}"),
+        headers: {"Content-Type": "application/json"}, body: data);
   }
 
   _HomePageState() {
@@ -111,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                 onChanged: (value) {
                   setState(() {
                     item.done = value;
-                    //add an update method - PUT
+                    update(item);
                   });
                 },
               ),
@@ -121,8 +131,8 @@ class _HomePageState extends State<HomePage> {
                 child: Icon(Icons.delete_sweep),
               ),
               onDismissed: (direction) {
-                print(direction);
-                remove(index);
+                remove(index, item);
+                widget.items.removeAt(index);
               });
         },
       ),

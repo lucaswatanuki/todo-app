@@ -13,4 +13,4 @@ mongoose.connect('mongodb+srv://lucasw:admin@cluster0-mqscv.mongodb.net/todo?ret
 app.use(express.json());
 app.use(cors());
 app.use(routes);
-app.listen(8080)
+app.listen(8080);
