@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:todo/models/item.dart';
 import 'package:http/http.dart' as http;
@@ -103,10 +101,10 @@ class _HomePageState extends State<HomePage> {
           controller: newTaskCtrl,
           style: TextStyle(
             color: Colors.white,
-            fontSize: 18,
+            fontSize: 20,
           ),
           decoration: InputDecoration(
-              labelText: "New task",
+              labelText: "Adicionar Tarefa",
               labelStyle: TextStyle(color: Colors.white)),
         ),
       ),
