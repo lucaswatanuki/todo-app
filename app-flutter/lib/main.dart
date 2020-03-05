@@ -12,7 +12,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Todo App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(primarySwatch: Colors.blueGrey),
       home: HomePage(),
     );
   }
@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
             fontSize: 20,
           ),
           decoration: InputDecoration(
-              labelText: "Adicionar Tarefa",
+              labelText: "New task",
               labelStyle: TextStyle(color: Colors.white)),
         ),
       ),
@@ -156,7 +156,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: add,
         child: Icon(Icons.add),
-        backgroundColor: Colors.pink,
+        backgroundColor: Colors.blue,
       ),
     );
   }
